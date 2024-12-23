@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sdn-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sdn-controller
+  template:
+    metadata:
+      labels:
+        app: sdn-controller
+    spec:
+      containers:
+        - name: sdn-controller
+          image: allenlin316/sdn-controller:v1
+          ports:
+            - containerPort: 9091
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sdn-controller-service
+spec:
+  selector:
+    app: sdn-controller
+  ports:
+    - protocol: TCP
+      port: 9091
+      targetPort: 9091
+  type: ClusterIP

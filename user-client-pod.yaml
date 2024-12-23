@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: user-client
+  labels:
+    app: user-client
+spec:
+  containers:
+  - name: user-client
+    image: allenlin316/user-client:v1  # Replace with your image name
+    ports:
+      - containerPort: 5000  # This is the internal port exposed by your container
+    command: ["/bin/bash", "-c", "while true; do sleep 1000; done"]  # Assuming the entry point is the python script

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scm-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scm-proxy
+  template:
+    metadata:
+      labels:
+        app: scm-proxy
+    spec:
+      containers:
+        - name: scm-proxy
+          image: allenlin316/scm-proxy:v1
+          ports:
+            - containerPort: 9090
+          env:
+            - name: SDN_CONTROLLER_SERVICE
+              value: "sdn-controller-service"  # SDN-controller service name
+            - name: TCP_SERVER_SERVICE
+              value: "tcp-server-service"    # TCP server service name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: scm-proxy-service
+spec:
+  selector:
+    app: scm-proxy
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
+  type: ClusterIP
